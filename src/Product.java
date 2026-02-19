@@ -4,7 +4,7 @@ public abstract class Product {
     protected int quantity;
     private String productId;
 
-    public Product(String name, double price, int quantity) {
+    public Product() {
         // TODO: инициализировать поля
         // productId генерируется автоматически
     }

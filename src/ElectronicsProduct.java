@@ -4,6 +4,7 @@ public class ElectronicsProduct extends Product {
 
     public ElectronicsProduct(String name, double price, int quantity,
                               int warrantyMonths, String brand) {
+        super();
         // TODO: вызвать конструктор родителя
         // TODO: инициализировать свои поля
     }
