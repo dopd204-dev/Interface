@@ -1,73 +1,120 @@
 public class WarehouseManager {
 
-    // Рассчитывает общую стоимость всех товаров с учетом скидок
-    // ПОЛИМОРФИЗМ: автоматически вызовет правильный getDiscountedPrice()
-    // у каждого наследника свой!
     public static double calculateTotalValue(Product[] products) {
-        // TODO: пройти по массиву
-        // TODO: для каждого товара вызвать getTotalValue()
-        // TODO: суммировать и вернуть результат
-        return 0;
+        double total = 0;
+
+        for (Product p : products) {
+            total += p.getTotalValue();
+        }
+
+        return total;
     }
 
-    // Находит все просроченные товары
-    // ПОЛИМОРФИЗМ: вызовет isExpired() для каждого товара
-    // у FoodProduct — проверяет дату, у остальных — всегда false
     public static Product[] findExpiredProducts(Product[] products) {
-        // TODO: первый проход — посчитать количество просроченных
-        // TODO: создать массив нужного размера
-        // TODO: второй проход — заполнить массив просроченными товарами
-        return null;
+
+        int count = 0;
+        for (Product p : products) {
+            if (p.isExpired()) {
+                count++;
+            }
+        }
+
+        Product[] expired = new Product[count];
+
+        int index = 0;
+        for (Product p : products) {
+            if (p.isExpired()) {
+                expired[index++] = p;
+            }
+        }
+
+        return expired;
     }
 
-    // Выводит информацию обо всех товарах
-    // ПОЛИМОРФИЗМ: каждый тип выведет свою информацию через displayInfo()
     public static void displayAllProducts(Product[] products) {
-        // TODO: пройти по массиву
-        // TODO: для каждого товара вызвать displayInfo()
-        // TODO: вывести разделитель "---" между товарами
+
+        for (Product p : products) {
+            p.displayInfo();
+            System.out.println("---");
+        }
     }
 
-    // Считает общую экономию от всех скидок
     public static double calculateTotalDiscount(Product[] products) {
-        // TODO: для каждого товара:
-        // TODO:   originalPrice = getPrice() * getQuantity()
-        // TODO:   discountedPrice = getTotalValue()
-        // TODO:   экономия = originalPrice - discountedPrice
-        // TODO: суммировать всю экономию и вернуть
-        return 0;
+
+        double totalDiscount = 0;
+
+        for (Product p : products) {
+            double originalPrice = p.getPrice() * p.getQuantity();
+            double discountedPrice = p.getTotalValue();
+            totalDiscount += (originalPrice - discountedPrice);
+        }
+
+        return totalDiscount;
     }
 
-    // Выводит условия хранения для каждого товара
-    // ПОЛИМОРФИЗМ: у каждого наследника своя реализация getStorageConditions()
     public static void printStorageRequirements(Product[] products) {
-        // TODO: для каждого товара вывести:
-        // TODO: getName() + ": " + getStorageConditions()
+
+        for (Product p : products) {
+            System.out.println(p.getName() + ": " + p.getStorageConditions());
+        }
     }
 
-    // Находит самый дорогой товар (по цене со скидкой)
     public static Product findMostExpensive(Product[] products) {
-        // TODO: найти товар с максимальным getDiscountedPrice()
-        // Подсказка: заведите переменную Product most = products[0]
-        // и сравнивайте в цикле
-        return null;
+
+        if (products == null || products.length == 0) {
+            return null;
+        }
+
+        Product most = products[0];
+
+        for (Product p : products) {
+            if (p.getDiscountedPrice() > most.getDiscountedPrice()) {
+                most = p;
+            }
+        }
+
+        return most;
     }
 
-    // Находит все товары определённого типа
-    // INSTANCEOF: проверяет, является ли объект экземпляром нужного класса
     public static Product[] findByType(Product[] products, Class<?> type) {
-        // TODO: первый проход — посчитать сколько товаров нужного типа
-        //       Подсказка: type.isInstance(products[i])
-        // TODO: создать массив нужного размера
-        // TODO: второй проход — заполнить массив
-        return null;
+
+        int count = 0;
+        for (Product p : products) {
+            if (type.isInstance(p)) {
+                count++;
+            }
+        }
+
+        Product[] result = new Product[count];
+
+        int index = 0;
+        for (Product p : products) {
+            if (type.isInstance(p)) {
+                result[index++] = p;
+            }
+        }
+
+        return result;
     }
 
-    // Считает среднюю скидку по всему складу в процентах
     public static double calculateAverageDiscount(Product[] products) {
-        // TODO: для каждого товара посчитать скидку в процентах:
-        // TODO:   discount = (getPrice() - getDiscountedPrice()) / getPrice() * 100
-        // TODO: вернуть среднее значение по всем товарам
-        return 0;
+
+        if (products == null || products.length == 0) {
+            return 0;
+        }
+
+        double totalPercent = 0;
+
+        for (Product p : products) {
+            if (p.getPrice() > 0) {
+                double discount =
+                        (p.getPrice() - p.getDiscountedPrice())
+                                / p.getPrice() * 100;
+
+                totalPercent += discount;
+            }
+        }
+
+        return totalPercent / products.length;
     }
 }

@@ -4,41 +4,49 @@ public class ClothingProduct extends Product {
 
     public ClothingProduct(String name, double price, int quantity,
                            String size, String season) {
-        // TODO: вызвать конструктор родителя
-        // TODO: инициализировать свои поля
+
+        super(name, price, quantity);
+
+        this.size = size;
+        this.season = season;
     }
 
-    // Одежда не портится — реализация уже дана, объяснить почему именно так
     @Override
     public boolean isExpired() {
         return false;
     }
 
-    // РЕАЛИЗОВАТЬ: сезонная распродажа — скидка 30% на одежду не в сезон
+
+
     @Override
     public double getDiscountedPrice() {
-        // TODO: получить текущий сезон через getCurrentSeason()
-        // TODO: если season == "Зима" и текущий == "Лето", скидка 30%
-        // TODO: если season == "Лето" и текущий == "Зима", скидка 30%
-        // TODO: иначе обычная цена
-        return 0;
+
+        String current = getCurrentSeason();
+
+        if ((season.equalsIgnoreCase("Зима") && current.equalsIgnoreCase("Лето")) ||
+                (season.equalsIgnoreCase("Лето") && current.equalsIgnoreCase("Зима"))) {
+
+            return price * 0.7;
+        }
+
+        return price;
     }
 
-    // РЕАЛИЗОВАТЬ: условия хранения одежды
     @Override
     public String getStorageConditions() {
-        // TODO: вернуть подходящую строку условий хранения одежды
-        return "";
+        return "Хранить в сухом месте, защищенном от влаги и прямых солнечных лучей";
     }
 
-    // РЕАЛИЗОВАТЬ: вывести инфо + размер и сезон
     @Override
     public void displayInfo() {
-        // TODO: вывести название, цену со скидкой, количество
-        // TODO: вывести размер и сезон
+        System.out.println("Название: " + name);
+        System.out.println("Цена со скидкой: " + getDiscountedPrice());
+        System.out.println("Количество: " + quantity);
+        System.out.println("Размер: " + size);
+        System.out.println("Сезон: " + season);
     }
 
     private String getCurrentSeason() {
-        return "Зима"; // упрощение для задания
+        return "Зима";
     }
 }
